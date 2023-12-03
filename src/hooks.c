@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:30:06 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/01 16:15:08 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/03 19:10:15 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	ft_rotate_player(t_data *data, float val)
 
 int		ft_player_move( int keycode, t_data *data)
 {
+	ft_create_image(data);
 	if (keycode == W)
 		ft_deplace_player(data, MOVE_SPEED, 0);
 	else if (keycode == S)
@@ -52,8 +53,8 @@ int		ft_player_move( int keycode, t_data *data)
 		ft_free_all(data);
 		exit (0);
 	}
-	ft_raycast_horizontal(data, 90);
-	//ft_render_game(data);
+	//raycast()
+	mlx_put_image_to_window(data->mlx, data->win, data->img.mlx_img, 0, 0);
 	printf("[DEBUG] Player pos:x=%f, y=%f", data->player->pos->x, data->player->pos->y);
 	printf(" | Player angle:%f\n", data->player->angle);
 	return (0);

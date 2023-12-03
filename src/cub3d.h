@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 14:15:04 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/12/01 16:15:38 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/03 18:43:41 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,15 @@ typedef struct s_textures
 	unsigned int	ceiling;
 }		t_textures;
 
+typedef struct s_image
+{
+	void	*mlx_img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_image;
+
 typedef struct s_coords
 {
 	int		x;
@@ -91,6 +100,7 @@ typedef struct s_data
 	char		err;
 	t_textures	*textures;
 	t_player	*player;
+	t_image		img;
 }		t_data;
 
 /*		PARSING FUNCTIONS		*/
@@ -121,7 +131,12 @@ int		ft_player_move(int keycode, t_data *data);
 
 /*		RAYCASTING		*/
 
+void	castRays(t_data *data);
 //void	ft_render_game(t_data *data);
-void	ft_raycast_horizontal(t_data *data, int angle);
+
+/*		DRAW			*/
+
+void	img_pix_put(t_image *img, int x, int y, int color);
+void	ft_create_image(t_data *data);
 
 #endif
