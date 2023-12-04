@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 14:15:04 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/12/04 18:42:52 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/04 20:43:35 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include "../minilibx-linux/mlx.h"
 # include "../minilibx-linux/mlx_int.h"
 
+# include <limits.h>
+# include <float.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
@@ -41,8 +43,8 @@
 
 # define WALL_RES	500
 
-# define SCREENWIDTH	600
-# define SCREENHEIGHT	600
+# define SCREENWIDTH	1280
+# define SCREENHEIGHT	720
 
 # define MOVE_SPEED		0.15
 # define ROT_SPEED		2.0

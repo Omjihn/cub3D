@@ -3,8 +3,8 @@ SO ./textures/ground.xpm
 WE ./textures/ground.xpm
 EA ./textures/ground.xpm
 
-F 153,204,255
-C 155,75,0
+C 153,204,255
+F 155,75,0
 
 111111111111
 10000000011
