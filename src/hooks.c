@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:30:06 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/04 20:30:23 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/05 17:32:06 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ int	ft_close_button(t_data *data)
 	exit(0);
 }
 
-static void	ft_deplace_player(t_data *data, float y, float x)	//a changer besoin de l'angle du personnage pour le deplacer
+static void	ft_deplace_player(t_data *data, float forward, float right)
 {
-	data->player->pos->y += y;
-	data->player->pos->x += x;
+	data->player->pos.x += forward * cosf(ft_deg_to_rad(data->player->angle))
+							+ right * cosf(ft_deg_to_rad(data->player->angle + 90.0));
+	data->player->pos.y += forward * sinf(-ft_deg_to_rad(data->player->angle))
+							+ right * sinf(-ft_deg_to_rad(data->player->angle + 90.0));
 }
 
 static void	ft_rotate_player(t_data *data, float val)
@@ -33,28 +35,34 @@ static void	ft_rotate_player(t_data *data, float val)
 	data->player->angle +=val;
 }
 
+int		ft_mouse_hook(int x, int y, t_data *data)
+{
+	(void) y;
+	x -= SCREENWIDTH / 2;
+	ft_rotate_player(data, (float) (x * -ROT_SPEED));
+	mlx_mouse_move(data->mlx, data->win, SCREENWIDTH / 2, SCREENHEIGHT / 2);
+	//mlx_mouse_hide(data->mlx, data->win); // leaks...
+	return (0);
+}
+
 int		ft_player_move( int keycode, t_data *data)
 {
-	ft_create_image(data);
 	if (keycode == W)
-		ft_deplace_player(data, MOVE_SPEED, 0);
-	else if (keycode == S)
-		ft_deplace_player(data, -MOVE_SPEED, 0);
-	else if (keycode == A)
 		ft_deplace_player(data, 0, -MOVE_SPEED);
-	else if (keycode == D)
+	else if (keycode == S)
 		ft_deplace_player(data, 0, MOVE_SPEED);
+	else if (keycode == A)
+		ft_deplace_player(data, MOVE_SPEED, 0);
+	else if (keycode == D)
+		ft_deplace_player(data, -MOVE_SPEED, 0);
+/*	else if (keycode == E)
+		ft_rotate_player(data, -ROT_SPEED);		// Remplaced by ft_mouse_hook
 	else if (keycode == Q)
-		ft_rotate_player(data, -ROT_SPEED);
-	else if (keycode == E)
-		ft_rotate_player(data, ROT_SPEED);
+		ft_rotate_player(data, ROT_SPEED);	*/
 	else if (keycode == ESC)
 	{
 		ft_free_all(data);
 		exit (0);
 	}
-	ft_game_loop(data);
-	printf("[DEBUG] Player pos:x=%f, y=%f", data->player->pos->x, data->player->pos->y);
-	printf(" | Player angle:%f\n", data->player->angle);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 12:18:22 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/04 09:50:15 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/05 17:16:12 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	ft_free_all(t_data *data)
 	int		i;
 
 	i = 0;
+	//mlx_mouse_show(data->mlx, data->win);
 	if (data)
 	{
 		if (data->win)
@@ -46,15 +47,11 @@ void	ft_free_all(t_data *data)
 		if (data->textures)
 			ft_free_textures(data);
 		if (data->player)
-		{
-			if (data->player->pos)
-				free (data->player->pos);
 			free(data->player);
-		}
 		if (data->img.mlx_img)
-		{
 			mlx_destroy_image(data->mlx, data->img.mlx_img);
-		}
+		if (data->rcast)
+			free(data->rcast);
 		mlx_destroy_display(data->mlx);
 		free(data->mlx);
 		free(data);

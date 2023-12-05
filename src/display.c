@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:35:00 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/04 09:46:53 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/05 17:55:11 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ void	ft_draw_bg(t_data *data)
 	{
 		x = 0;
 		while (x <= SCREENWIDTH)
-			img_pix_put(&data->img, x++, y, data->textures->ceiling);
+			img_pix_put(&data->img, x++, y, data->textures->floor);
 		y++;
 	}
 	while (y <= SCREENHEIGHT)
 	{
 		x = 0;
 		while (x <= SCREENWIDTH)
-			img_pix_put(&data->img, x++, y, data->textures->floor);
+			img_pix_put(&data->img, x++, y, data->textures->ceiling);
 		y++;
 	}
 }

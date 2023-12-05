@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/04 10:13:51 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/12/04 20:49:19 by gbricot          ###   ########.fr       */
+/*   Created: 2023/12/05 16:45:26 by gbricot           #+#    #+#             */
+/*   Updated: 2023/12/05 18:05:58 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,97 +17,85 @@ float ft_deg_to_rad(float a)
 	return (a * M_PI / 180.0);
 }
 
-float	vector_distance(t_data *data)
+void	ft_raycast(t_data *data)
 {
-	t_coords_f	pos;
-	t_coords_f	dir;
-	t_coords_f	plane;
-
-	pos.x = data->player->pos->x;
-	pos.y = data->player->pos->y;
-    dir.x = -1;
-    dir.y = 0;
-	plane.x = 0;
-	plane.y = 0.66;
+	data->rcast->pos.x = data->player->pos.x;
+	data->rcast->pos.y = data->player->pos.y;
+	data->rcast->dir.y = cosf(ft_deg_to_rad(data->player->angle));
+	data->rcast->dir.x = sinf(ft_deg_to_rad(data->player->angle));
+	data->rcast->plane.x = cosf(FOV / 2.0) * -data->rcast->dir.y;
+	data->rcast->plane.y = sinf(FOV / 2.0) * data->rcast->dir.x;
 
 	int x = 0;
 	while (x < SCREENWIDTH)
 	{
-		double	camerax = 2.0 * x / SCREENWIDTH - 1.0;
-		t_coords_d	raydir;
-		raydir.x = dir.x + plane.x * camerax;
-		raydir.y = dir.y + plane.y * camerax;
+		data->rcast->camera_x = 2.0 * x / SCREENWIDTH - 1.0;
+		data->rcast->raydir.x = data->rcast->dir.x + data->rcast->plane.x * data->rcast->camera_x;
+		data->rcast->raydir.y = data->rcast->dir.y + data->rcast->plane.y * data->rcast->camera_x;
 
-		t_coords	map;
-		map.x = pos.x;
-		map.y = pos.y;
+		data->rcast->map.x = data->rcast->pos.x;
+		data->rcast->map.y = data->rcast->pos.y;
 
-		t_coords_d	sidedist;
-		t_coords_d	deltadist;
-		if (raydir.x == 0)
-			deltadist.x = DBL_MAX;
+		if (data->rcast->raydir.x == 0)
+			data->rcast->deltadist.x = 1e30;
 		else
-			deltadist.x = fabs((1 / raydir.x));
-		if (raydir.y == 0)
-			deltadist.y = DBL_MAX;
+			data->rcast->deltadist.x = fabs((1.0 / data->rcast->raydir.x));
+		if (data->rcast->raydir.y == 0)
+			data->rcast->deltadist.y = 1e30;
 		else
-			deltadist.y = fabs((1 / raydir.y));
-		double	perpWallDist;
+			data->rcast->deltadist.y = fabs((1.0 / data->rcast->raydir.y));
 
-		t_coords	step;
+		if (data->rcast->raydir.x < 0)
+		{
+			data->rcast->step.x = -1;
+			data->rcast->sidedist.x = (data->rcast->pos.x - data->rcast->map.x) * data->rcast->deltadist.x;
+		}
+		else
+		{
+			data->rcast->step.x = 1;
+			data->rcast->sidedist.x = (data->rcast->map.x + 1.0 - data->rcast->pos.x) * data->rcast->deltadist.x;
+		}
+		if (data->rcast->raydir.y < 0)
+		{
+			data->rcast->step.y = -1;
+			data->rcast->sidedist.y = (data->rcast->pos.y - data->rcast->map.y) * data->rcast->deltadist.y;
+		}
+		else
+		{
+			data->rcast->step.y = 1;
+			data->rcast->sidedist.y = (data->rcast->map.y + 1.0 - data->rcast->pos.y) * data->rcast->deltadist.y;
+		}
+
 		int		hit = 0;
-		int		side;
-
-		if (raydir.x < 0)
-		{
-			step.x = -1;
-			sidedist.x = (pos.x - map.x) * deltadist.x;
-		}
-		else
-		{
-			step.x = 1;
-			sidedist.x = (map.x + 1.0 - pos.x) * deltadist.x;
-		}
-		if (raydir.y < 0)
-		{
-			step.y = -1;
-			sidedist.y = (pos.y - map.y) * deltadist.y;
-		}
-		else
-		{
-			step.y = 1;
-			sidedist.y = (map.y + 1.0 - pos.y) * deltadist.y;
-		}
-
 		while (hit == 0)
 		{
-			if (sidedist.x < sidedist.y)
+			if (data->rcast->sidedist.x < data->rcast->sidedist.y)
 			{
-				sidedist.x += deltadist.x;
-				map.x += step.x;
-				side = 0;
+				data->rcast->sidedist.x += data->rcast->deltadist.x;
+				data->rcast->map.x += data->rcast->step.x;
+				data->rcast->side = 0;
 			}
 			else
 			{
-				sidedist.y += deltadist.y;
-				map.y += step.y;
-				side = 1;
+				data->rcast->sidedist.y += data->rcast->deltadist.y;
+				data->rcast->map.y += data->rcast->step.y;
+				data->rcast->side = 1;
 			}
-			if (map.x >= 0 && map.x <= data->map_max_x && map.y >= 0 && map.y < data->map_max_y)
+			if (data->rcast->map.x >= 0 && data->rcast->map.x <= data->map_max_x \
+				&& data->rcast->map.y >= 0 && data->rcast->map.y < data->map_max_y)
 			{
-				if (data->map[map.y][map.x] == '1')
+				if (data->map[data->rcast->map.y][data->rcast->map.x] == '1')
 					hit = 1;
 			}
 			else
-			{
 				break ;
-			}
 		}
-		if (side == 0)
-			perpWallDist = (sidedist.x - deltadist.x);
+		if (data->rcast->side == 0)
+			data->rcast->perp_wall_dist = (data->rcast->sidedist.x - data->rcast->deltadist.x);
 		else
-			perpWallDist = (sidedist.y - deltadist.y);
-		int lineHeight = (int)(SCREENHEIGHT / perpWallDist);
+			data->rcast->perp_wall_dist = (data->rcast->sidedist.y - data->rcast->deltadist.y);
+
+		int lineHeight = (int)(SCREENHEIGHT / data->rcast->perp_wall_dist);
 		int drawStart = -lineHeight / 2 + SCREENHEIGHT / 2;
 		if(drawStart < 0)
 			drawStart = 0;
@@ -115,9 +103,7 @@ float	vector_distance(t_data *data)
 		if(drawEnd >= SCREENHEIGHT)
 			drawEnd = SCREENHEIGHT - 1;
 		while (drawStart < drawEnd)
-			img_pix_put(&data->img, x, drawStart++, 0x000000);
-		//printf("Wall distance :%f\n", perpWallDist);
+			img_pix_put(&data->img, x, drawStart++, 0xFFFFFF);
 		x++;
 	}
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 10:01:20 by gbricot           #+#    #+#             */
-/*   Updated: 2023/11/30 14:21:08 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/05 18:38:25 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ int	ft_get_color(char *line)
 	err = 2147483648;
 	while (line[i] && line[i] != '\n')
 	{
+		if (!ft_isdigit(line[i]) || line[i] == ' ' || line[i] == ',')
+			return (err);
 		while (line[i] == ' ')
 			i++;
 		if (line[i] && ft_isdigit(line[i]))

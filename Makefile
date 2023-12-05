@@ -8,8 +8,7 @@ SRC_FILES :=	main.c \
 				display.c \
 				ft_free.c \
 				ft_init.c \
-				ft_raycasting_1.c \
-				ft_raycasting_2.c
+				ft_raycasting_1.c
 
 
 OBJ_DIR := ./obj

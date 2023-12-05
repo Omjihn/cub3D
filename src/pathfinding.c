@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 10:50:34 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/04 16:56:07 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/05 18:19:22 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	ft_get_player_coords(t_data *data)
 	int		i;
 	int		tab;
 
-	data->player = ft_calloc(sizeof(t_player), 1);
 	tab = 0;
 	while (data->map[tab])
 	{
@@ -27,16 +26,15 @@ void	ft_get_player_coords(t_data *data)
 			if (data->map[tab][i] == 'N' || data->map[tab][i] == 'S'
 				|| data->map[tab][i] == 'E' || data->map[tab][i] == 'W')
 			{
-				if (!data->player->pos)
+				if (!data->player)
 				{
+					data->player = ft_calloc(sizeof(t_player), 1);
 					data->player->angle = 90; // Need to add the player angle with the addapted character !!!
-					data->player->pos = ft_calloc(sizeof(t_coords_f), 1);
-					data->player->pos->x = (float) i + 0.5;
-					data->player->pos->y = (float) tab + 0.5;
+					data->player->pos.x = (float) i + 0.5;
+					data->player->pos.y = (float) tab + 0.5;
 				}
 				else
 				{
-					free(data->player->pos);
 					free(data->player);
 					data->player = NULL;
 					return ;
@@ -91,7 +89,7 @@ char	ft_pathfinding(t_data *data)
 
 	ft_get_player_coords(data);
 	if (data->player)
-		printf("[DEBUG] player coords : y = %f | x = %f\n", data->player->pos->y, data->player->pos->x);
+		printf("[DEBUG] player coords : y = %f | x = %f\n", data->player->pos.y, data->player->pos.x);
 	if (!data->player)
 		return (0);
 	i = 0;
@@ -102,7 +100,7 @@ char	ft_pathfinding(t_data *data)
 		i++;
 	}
 	cpy_map[i] = NULL;
-	ft_run_through(data, cpy_map, data->player->pos->y, data->player->pos->x);
+	ft_run_through(data, cpy_map, data->player->pos.y, data->player->pos.x);
 	i = 0;
 	while (cpy_map[i])
 		free (cpy_map[i++]);
