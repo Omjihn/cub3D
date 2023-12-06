@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:45:26 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/05 18:05:58 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/06 17:41:44 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,43 @@ void	ft_raycast(t_data *data)
 		else
 			data->rcast->perp_wall_dist = (data->rcast->sidedist.y - data->rcast->deltadist.y);
 
-		int lineHeight = (int)(SCREENHEIGHT / data->rcast->perp_wall_dist);
-		int drawStart = -lineHeight / 2 + SCREENHEIGHT / 2;
-		if(drawStart < 0)
-			drawStart = 0;
-		int drawEnd = lineHeight / 2 + SCREENHEIGHT / 2;
-		if(drawEnd >= SCREENHEIGHT)
-			drawEnd = SCREENHEIGHT - 1;
-		while (drawStart < drawEnd)
-			img_pix_put(&data->img, x, drawStart++, 0xFFFFFF);
-		x++;
+		int line_height = (int) (SCREENHEIGHT / data->rcast->perp_wall_dist);
+		int draw_start = -line_height / 2 + SCREENHEIGHT / 2;
+		if(draw_start < 0)
+			draw_start = 0;
+		int draw_end = line_height / 2 + SCREENHEIGHT / 2;
+		if(draw_end >= SCREENHEIGHT)
+			draw_end = SCREENHEIGHT - 1;
+
+		float wall_x;
+		if (data->rcast->side == 0)
+			wall_x = data->player->pos.y + data->rcast->perp_wall_dist * data->rcast->raydir.y;
+		else
+			wall_x = data->player->pos.x + data->rcast->perp_wall_dist * data->rcast->raydir.x;
+		wall_x -= floor((wall_x));
+		int tex_x = (int) (wall_x * WALL_RES);
+		if(data->rcast->side == 0 && data->rcast->raydir.x > 0)
+			tex_x = WALL_RES - tex_x - 1;
+		if(data->rcast->side == 1 && data->rcast->raydir.y < 0)
+			tex_x = WALL_RES - tex_x - 1;
+
+
+		float	step = 1.0 * (float) WALL_RES / line_height;
+		float	tex_pos = (draw_start - SCREENHEIGHT / 2 + line_height / 2) * step;
+		int	y = draw_start;
+		while (y < draw_end)
+		{
+			int	tex_y = (int) tex_pos & (WALL_RES - 1);
+			tex_pos += step;
+			int	index = (int) ((tex_y * data->textures->no.line_len) + (tex_x * (data->textures->no.bpp / 8)));
+			unsigned int red = data->textures->no.addr[index];
+			unsigned int green = data->textures->no.addr[index + 1];
+			unsigned int blue = data->textures->no.addr[index + 2];
+			img_pix_put(&data->img, x, y, ((red << 16) + (green << 8) + blue));
+			y++;
+		}
+/*		while (draw_start < draw_end)
+			img_pix_put(&data->img, x, draw_start++, 0xFFFFFF);
+*/		x++;
 	}
 }

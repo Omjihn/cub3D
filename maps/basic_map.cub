@@ -1,11 +1,11 @@
 
-NO ./textures/ground.xpm
-SO ./textures/ground.xpm
-WE ./textures/ground.xpm
-EA ./textures/ground.xpm
+NO ./textures/red.xpm
+SO ./textures/red.xpm
+WE ./textures/red.xpm
+EA ./textures/red.xpm
 
-C 153,204,255
-F 0,0,0
+F 153,204,255
+C 128,128,128
 
 111111111111
 10000000011

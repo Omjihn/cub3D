@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 14:15:04 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/12/05 18:05:46 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/06 17:00:03 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,23 @@
 # define LEFT		65361
 # define RIGHT		65363
 
-# define WALL_RES	500
+# define WALL_RES	128
 
 # define SCREENWIDTH	1920
 # define SCREENHEIGHT	1080
 
-# define MOVE_SPEED		0.20
-# define ROT_SPEED		0.02
+# define MOVE_SPEED		0.1
+# define ROT_SPEED		0.015
 
 # define SQUARE_RES		64
 
 # define FOV		90
 
-/*		STRUCTURES		*/
+#define MINI_MAP_SCALE	8 // Example scale factor to reduce the mini map size
+#define X_OFFSET		10 // X offset from the screen corner
+#define Y_OFFSET		10 // Y offset from the screen corner
 
-typedef struct s_texture
-{
-	void			*no;
-	void			*so;
-	void			*ea;
-	void			*we;
-	unsigned int	floor;
-	unsigned int	ceiling;
-}		t_textures;
+/*		STRUCTURES		*/
 
 typedef struct s_image
 {
@@ -73,6 +67,16 @@ typedef struct s_image
 	int		line_len;
 	int		endian;
 }	t_image;
+
+typedef struct s_texture
+{
+	t_image		no;
+	t_image		so;
+	t_image		ea;
+	t_image		we;
+	unsigned int	floor;
+	unsigned int	ceiling;
+}		t_textures;
 
 typedef struct s_coords
 {
@@ -155,6 +159,8 @@ void	ft_raycast_horizontal(t_data *data, int angle);
 
 /*		DRAW			*/
 
+void	ft_draw_vector(float x1, float y1, float x2, float y2, t_data *data);
+
 void	img_pix_put(t_image *img, int x, int y, int color);
 void	ft_create_image(t_data *data);
 void	ft_draw_bg(t_data *data);
@@ -173,6 +179,10 @@ void ft_draw_rays_2d(t_data *data);
 /*		FT_PAYCASTING_2			*/
 float	castRay(t_data *data);
 void	ft_raycast(t_data *data);
+
+/*		MINI_MAP			*/
+void ft_draw_mini_map(t_data *data);
+void ft_draw_mini_player(t_data *data);
 
 
 #endif

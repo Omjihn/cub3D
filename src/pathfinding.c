@@ -6,11 +6,26 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 10:50:34 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/05 18:19:22 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/06 17:14:01 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static void	ft_put_player(t_data *data, int tab, int i)
+{
+	data->player = ft_calloc(sizeof(t_player), 1);
+	data->player->pos.x = (float) i + 0.5;
+	data->player->pos.y = (float) tab + 0.5;
+	if (data->map[tab][i] == 'N')
+		data->player->angle = 180;
+	if (data->map[tab][i] == 'S')
+		data->player->angle = 0;
+	if (data->map[tab][i] == 'E')
+		data->player->angle = 90;
+	if (data->map[tab][i] == 'W')
+		data->player->angle = 270;
+}
 
 void	ft_get_player_coords(t_data *data)
 {
@@ -27,12 +42,7 @@ void	ft_get_player_coords(t_data *data)
 				|| data->map[tab][i] == 'E' || data->map[tab][i] == 'W')
 			{
 				if (!data->player)
-				{
-					data->player = ft_calloc(sizeof(t_player), 1);
-					data->player->angle = 90; // Need to add the player angle with the addapted character !!!
-					data->player->pos.x = (float) i + 0.5;
-					data->player->pos.y = (float) tab + 0.5;
-				}
+					ft_put_player(data, tab, i);
 				else
 				{
 					free(data->player);
@@ -48,8 +58,6 @@ void	ft_get_player_coords(t_data *data)
 
 void	ft_run_through(t_data *data, char **map, int y, int x)
 {
-	//usleep(10000);
-	//printf("[DEBUG] Run Through : y=%d, x=%d | limits :x%d, y%d\n", y, x, data->map_max_y, data->map_max_x);
 	if (map[y][x] == '1')
 		return ;
 	if (x <= 0 || y <= 0 || x >= data->map_max_x - 1 || y >= data->map_max_y - 1)
@@ -58,24 +66,19 @@ void	ft_run_through(t_data *data, char **map, int y, int x)
 			|| map[y][x] == 'N' || map[y][x] == 'W')
 		{
 			data->err = 1;
-			//printf("[DEBUG] err with y=%d, x=%d\n", y, x);
 			return ;
 		}
-		//printf("[DEBUG] On the border return\n"); //useless
 		return ;
 	}
 	if (map[y][x] == ' ')
 	{
 		data->err = 1;
-		//printf("[DEBUG] err with y=%d, x=%d\n", y, x);
 		map[y][x] = '1';
 		return ;
 	}
 	if (map[y][x] == '0' || map[y][x] == 'S' || map[y][x] == 'E'
 		|| map[y][x] == 'N' || map[y][x] == 'W')
-	{
 		map[y][x] = '1';
-	}
 	ft_run_through(data, map, y - 1, x);
 	ft_run_through(data, map, y, x - 1);
 	ft_run_through(data, map, y + 1, x);
@@ -88,8 +91,6 @@ char	ft_pathfinding(t_data *data)
 	int		i;
 
 	ft_get_player_coords(data);
-	if (data->player)
-		printf("[DEBUG] player coords : y = %f | x = %f\n", data->player->pos.y, data->player->pos.x);
 	if (!data->player)
 		return (0);
 	i = 0;

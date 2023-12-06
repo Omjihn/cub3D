@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:15:29 by gbricot           #+#    #+#             */
-/*   Updated: 2023/11/29 13:56:38 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/06 12:21:08 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ char	ft_get_info(char *line, t_data *data)
 	i = 0;
 	if (!*line)
 		return (1);
-	if (!data->textures->no && !ft_strncmp(line, "NO ", 3))
-		data->textures->no = ft_get_image(line, data);
-	else if (!data->textures->so && !ft_strncmp(line, "SO ", 3))
-		data->textures->so = ft_get_image(line, data);
-	else if (!data->textures->ea && !ft_strncmp(line, "EA ", 3))
-		data->textures->ea = ft_get_image(line, data);
-	else if (!data->textures->we && !ft_strncmp(line, "WE ", 3))
-		data->textures->we = ft_get_image(line, data);
+	if (!data->textures->no.mlx_img && !ft_strncmp(line, "NO ", 3))
+		data->textures->no.mlx_img = ft_get_image(line, data);
+	else if (!data->textures->so.mlx_img && !ft_strncmp(line, "SO ", 3))
+		data->textures->so.mlx_img = ft_get_image(line, data);
+	else if (!data->textures->ea.mlx_img && !ft_strncmp(line, "EA ", 3))
+		data->textures->ea.mlx_img = ft_get_image(line, data);
+	else if (!data->textures->we.mlx_img && !ft_strncmp(line, "WE ", 3))
+		data->textures->we.mlx_img = ft_get_image(line, data);
 	else if (!ft_strncmp(line, "F ", 2))
 		data->textures->floor = ft_get_color(line);
 	else if (!ft_strncmp(line, "C ", 2))
@@ -82,9 +82,17 @@ char	*ft_strjoin_free(char *s1, char *s2)
 
 char	ft_check_data(t_data *data)
 {
-	if (!data->textures->no || !data->textures->so
-		|| !data->textures->ea || !data->textures->we)
+	if (!data->textures->no.mlx_img || !data->textures->so.mlx_img
+		|| !data->textures->ea.mlx_img || !data->textures->we.mlx_img)
 		return (0);
+	data->textures->no.addr = mlx_get_data_addr(data->textures->no.mlx_img,\
+		&data->textures->no.bpp, &data->textures->no.line_len, &data->textures->no.endian);
+	data->textures->so.addr = mlx_get_data_addr(data->textures->so.mlx_img,\
+		&data->textures->so.bpp, &data->textures->so.line_len, &data->textures->so.endian);
+	data->textures->ea.addr = mlx_get_data_addr(data->textures->ea.mlx_img,\
+		&data->textures->ea.bpp, &data->textures->ea.line_len, &data->textures->ea.endian);
+	data->textures->we.addr = mlx_get_data_addr(data->textures->we.mlx_img,\
+		&data->textures->we.bpp, &data->textures->we.line_len, &data->textures->we.endian);
 	if (data->textures->floor == 2147483648
 		|| data->textures->ceiling == 2147483648)
 		return (0);
