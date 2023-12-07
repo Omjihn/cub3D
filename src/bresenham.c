@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bresenham.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
+/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:53:55 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/06 16:42:50 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/07 09:45:31 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_draw_octant_0(float x1, float y1, float x2, float y2, t_data *data)
 	float	slope;
 
 	error = 0.0;
-	slope = (float) (y2 - y1) / (float) (x2 - x1);
+	slope = (float)(y2 - y1) / (float)(x2 - x1);
 	while (x1 <= x2)
 	{
 		img_pix_put(&data->img, x1, y1, 0xFFFFFF);
@@ -38,7 +38,7 @@ void	ft_draw_octant_1(float x1, float y1, float x2, float y2, t_data *data)
 	float	slope;
 
 	error = 0.0;
-	slope = (float) (x2 - x1) / (float) (y2 - y1);
+	slope = (float)(x2 - x1) / (float)(y2 - y1);
 	while (y1 <= y2)
 	{
 		img_pix_put(&data->img, x1, y1, 0xFFFFFF);
@@ -58,7 +58,7 @@ void	ft_draw_octant_6(float x1, float y1, float x2, float y2, t_data *data)
 	float	slope;
 
 	error = 0.0;
-	slope = (float) (x2 - x1) / (float) (y1 - y2);
+	slope = (float)(x2 - x1) / (float)(y1 - y2);
 	while (y1 >= y2)
 	{
 		img_pix_put(&data->img, x1, y1, 0xFFFFFF);
@@ -78,7 +78,7 @@ void	ft_draw_octant_7(float x1, float y1, float x2, float y2, t_data *data)
 	float	slope;
 
 	error = 0.0;
-	slope = (float) (y1 - y2) / (float) (x2 - x1);
+	slope = (float)(y1 - y2) / (float)(x2 - x1);
 	while (x1 <= x2)
 	{
 		img_pix_put(&data->img, x1, y1, 0xFFFFFF);

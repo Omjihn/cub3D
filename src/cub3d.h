@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 14:15:04 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/12/06 17:00:03 by gbricot          ###   ########.fr       */
+/*   Created: 2023/12/07 11:19:29 by gbricot           #+#    #+#             */
+/*   Updated: 2023/12/07 15:51:30 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -18,7 +19,6 @@
 # include "../minilibx-linux/mlx_int.h"
 
 # include <limits.h>
-# include <float.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
@@ -33,6 +33,8 @@
 
 # define Q			113
 # define E			101
+
+# define SPACE		32
 
 # define ESC		65307
 
@@ -53,9 +55,9 @@
 
 # define FOV		90
 
-#define MINI_MAP_SCALE	8 // Example scale factor to reduce the mini map size
-#define X_OFFSET		10 // X offset from the screen corner
-#define Y_OFFSET		10 // Y offset from the screen corner
+# define MINI_MAP_SCALE	8 // Example scale factor to reduce the mini map size
+# define X_OFFSET		10 // X offset from the screen corner
+# define Y_OFFSET		10 // Y offset from the screen corner
 
 /*		STRUCTURES		*/
 
@@ -93,7 +95,11 @@ typedef struct s_coords_f
 typedef struct s_player
 {
 	t_coords_f	pos;
-	float		angle;
+	float	angle;
+//	int			facing_door; // 1 if facing a door, 0 otherwise
+	int		facing_door;
+	int		door_x;
+	int		door_y;
 }		t_player;
 
 typedef struct s_rcast
@@ -106,9 +112,17 @@ typedef struct s_rcast
 	t_coords_f	deltadist;
 	t_coords	map;
 	t_coords	step;
-	float	camera_x;
-	float	perp_wall_dist;
+	float		camera_x;
+	float		line_height;
+	float		perp_wall_dist;
+	unsigned char	red;
+	unsigned char	green;
+	unsigned char	blue;
+	int		x;
 	int		side;
+	int		tex_x;
+	int		draw_end;
+	int		draw_start;
 }			t_rcast;
 
 typedef struct s_data
@@ -152,8 +166,6 @@ int		ft_close_button(t_data *data);
 int		ft_player_move(int keycode, t_data *data);
 int		ft_mouse_hook(int x, int y, t_data *param);
 
-/*		RAYCASTING		*/
-
 //void	ft_render_game(t_data *data);
 void	ft_raycast_horizontal(t_data *data, int angle);
 
@@ -170,19 +182,18 @@ int ft_game_loop(t_data *data);
 
 
 /*		FT_PAYCASTING_1			*/
-float ft_deg_to_rad(float a);
-float ft_fix_ang(float a);
-void ft_cast_vertical_ray(t_data *data, float *disV);
-void ft_cast_horizontal_ray(t_data *data, float *disH);
-void ft_draw_rays_2d(t_data *data);
-
-/*		FT_PAYCASTING_2			*/
-float	castRay(t_data *data);
+float	ft_deg_to_rad(float a);
+float	ft_fix_ang(float a);
+void	ft_cast_vertical_ray(t_data *data, float *disV);
+void	ft_cast_horizontal_ray(t_data *data, float *disH);
+void	ft_draw_rays_2d(t_data *data);
 void	ft_raycast(t_data *data);
 
 /*		MINI_MAP			*/
 void ft_draw_mini_map(t_data *data);
 void ft_draw_mini_player(t_data *data);
 
+/*		DOOR			*/
+void ft_interact_door(t_data *data);
 
 #endif

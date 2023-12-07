@@ -1,8 +1,8 @@
 
 NO ./textures/red.xpm
-SO ./textures/red.xpm
-WE ./textures/red.xpm
-EA ./textures/red.xpm
+SO ./textures/blue.xpm
+WE ./textures/green.xpm
+EA ./textures/grey.xpm
 
 F 153,204,255
 C 128,128,128

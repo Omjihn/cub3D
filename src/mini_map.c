@@ -6,7 +6,7 @@
 /*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 13:11:06 by ashalagi          #+#    #+#             */
-/*   Updated: 2023/12/06 16:43:02 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/12/07 09:02:41 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,15 @@ void ft_draw_mini_player(t_data *data)
 	// Draw the direction indicator
 	float direction_size = player_size * 2; // Size of the directional indicator
 	float angle = ft_deg_to_rad(data->player->angle + 90); // TO FIX
-	int dx = (int)(cosf(angle) * direction_size);
+	int dx = (int)(-cosf(angle) * direction_size);
 	int dy = (int)(sinf(angle) * direction_size);
 
 	// Draw a line for the direction
 	int i = 0;
 	while (i < direction_size)
 	{
-		float directionX = player_map_x + (dx * i) / direction_size;
-		float directionY = player_map_y + (dy * i) / direction_size;
+		int directionX = player_map_x + (dx * i) / direction_size;
+		int directionY = player_map_y + (dy * i) / direction_size;
 		if (i >= player_size / 2)
 		{															   // Start drawing after half the player size
 			img_pix_put(&data->img, directionX, directionY, 0xFF0000); // Yellow line for direction

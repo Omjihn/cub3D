@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
+/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:15:29 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/06 12:21:08 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/07 10:05:33 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,18 @@ char	ft_check_data(t_data *data)
 	if (!data->textures->no.mlx_img || !data->textures->so.mlx_img
 		|| !data->textures->ea.mlx_img || !data->textures->we.mlx_img)
 		return (0);
-	data->textures->no.addr = mlx_get_data_addr(data->textures->no.mlx_img,\
-		&data->textures->no.bpp, &data->textures->no.line_len, &data->textures->no.endian);
-	data->textures->so.addr = mlx_get_data_addr(data->textures->so.mlx_img,\
-		&data->textures->so.bpp, &data->textures->so.line_len, &data->textures->so.endian);
-	data->textures->ea.addr = mlx_get_data_addr(data->textures->ea.mlx_img,\
-		&data->textures->ea.bpp, &data->textures->ea.line_len, &data->textures->ea.endian);
-	data->textures->we.addr = mlx_get_data_addr(data->textures->we.mlx_img,\
-		&data->textures->we.bpp, &data->textures->we.line_len, &data->textures->we.endian);
+	data->textures->no.addr = mlx_get_data_addr(data->textures->no.mlx_img, \
+		&data->textures->no.bpp, &data->textures->no.line_len, \
+			&data->textures->no.endian);
+	data->textures->so.addr = mlx_get_data_addr(data->textures->so.mlx_img, \
+		&data->textures->so.bpp, &data->textures->so.line_len, \
+			&data->textures->so.endian);
+	data->textures->ea.addr = mlx_get_data_addr(data->textures->ea.mlx_img, \
+		&data->textures->ea.bpp, &data->textures->ea.line_len, \
+			&data->textures->ea.endian);
+	data->textures->we.addr = mlx_get_data_addr(data->textures->we.mlx_img, \
+		&data->textures->we.bpp, &data->textures->we.line_len, \
+			&data->textures->we.endian);
 	if (data->textures->floor == 2147483648
 		|| data->textures->ceiling == 2147483648)
 		return (0);

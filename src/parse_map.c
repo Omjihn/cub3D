@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
+/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 10:01:20 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/05 18:38:25 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/07 10:06:25 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	ft_get_color(char *line)
 	return (err);
 }
 
-int		ft_strlen_map(char *str)
+int	ft_strlen_map(char *str)
 {
 	int		i;
 

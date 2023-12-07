@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
+/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 09:35:00 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/05 17:55:11 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/07 09:49:29 by ashalagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
+#include "cub3d.h"
 
 void	ft_create_image(t_data *data)
 {
@@ -18,7 +18,7 @@ void	ft_create_image(t_data *data)
 		mlx_destroy_image(data->mlx, data->img.mlx_img);
 	data->img.mlx_img = mlx_new_image(data->mlx, SCREENWIDTH, SCREENHEIGHT);
 	data->img.addr = mlx_get_data_addr(data->img.mlx_img, \
-			&data->img.bpp,	&data->img.line_len, \
+			&data->img.bpp, &data->img.line_len, \
 			&data->img.endian);
 }
 
