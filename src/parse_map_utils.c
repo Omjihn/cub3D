@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 15:15:29 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/07 10:05:33 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:33:21 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ char	ft_check_data(t_data *data)
 	data->textures->we.addr = mlx_get_data_addr(data->textures->we.mlx_img, \
 		&data->textures->we.bpp, &data->textures->we.line_len, \
 			&data->textures->we.endian);
-	if (data->textures->floor == 2147483648
-		|| data->textures->ceiling == 2147483648)
+	if (data->textures->floor == ERR
+		|| data->textures->ceiling == ERR)
 		return (0);
 	if (!data->map)
 		return (0);

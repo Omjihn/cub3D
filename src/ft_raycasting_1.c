@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:45:26 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/07 15:47:41 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/08 14:02:23 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,11 @@ void	ft_calc_wall_dist(t_data *data)
 		data->rcast->tex_x = WALL_RES - data->rcast->tex_x - 1;
 }
 
+// void	ft_render_line(t_data *data)
+// {
+	
+// }
+
 void	ft_raycast(t_data *data)
 {
 	ft_init_raycast(data);
@@ -144,24 +149,42 @@ void	ft_raycast(t_data *data)
 		ft_search_wall(data);
 		ft_calc_wall_dist(data);
 		float	step = 1.0 * (float) WALL_RES / data->rcast->line_height;
-		float	tex_pos = (data->rcast->draw_start - SCREENHEIGHT / 2 + data->rcast->line_height / 2) * step;
+		data->rcast->tex_pos = (data->rcast->draw_start - SCREENHEIGHT / 2 + data->rcast->line_height / 2) * step;
 		int	y = data->rcast->draw_start;
 		while (y < data->rcast->draw_end)
 		{
-			int	tex_y = (int) tex_pos & (WALL_RES - 1);
-			tex_pos += step;
+			int	tex_y = (int) data->rcast->tex_pos & (WALL_RES - 1);
+			data->rcast->tex_pos += step;
 			int	index = floorf((tex_y * data->textures->no.line_len) + (data->rcast->tex_x * (data->textures->no.bpp / 8)));
 			if (data->rcast->side)
 			{
-				data->rcast->red = data->textures->no.addr[index];
-				data->rcast->green = data->textures->no.addr[index + 1];
-				data->rcast->blue = data->textures->no.addr[index + 2];
+				if (data->rcast->raydir.y > 0.0)
+				{
+					data->rcast->red = data->textures->so.addr[index + 2];
+					data->rcast->green = data->textures->so.addr[index + 1];
+					data->rcast->blue = data->textures->so.addr[index];
+				}
+				else
+				{
+					data->rcast->red = data->textures->no.addr[index + 2];
+					data->rcast->green = data->textures->no.addr[index + 1];
+					data->rcast->blue = data->textures->no.addr[index];
+				}
 			}
 			else
 			{
-				data->rcast->red = data->textures->we.addr[index];
-				data->rcast->green = data->textures->we.addr[index + 1];
-				data->rcast->blue = data->textures->we.addr[index + 2];
+				if (data->rcast->raydir.x > 0.0)
+				{
+					data->rcast->red = data->textures->ea.addr[index + 2];
+					data->rcast->green = data->textures->ea.addr[index + 1];
+					data->rcast->blue = data->textures->ea.addr[index];
+				}
+				else
+				{
+					data->rcast->red = data->textures->we.addr[index + 2];
+					data->rcast->green = data->textures->we.addr[index + 1];
+					data->rcast->blue = data->textures->we.addr[index];
+				}
 			}
 			img_pix_put(&data->img, data->rcast->x, y, ((data->rcast->red << 16) + (data->rcast->green << 8) + data->rcast->blue));
 			y++;

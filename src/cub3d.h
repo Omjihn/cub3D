@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 11:19:29 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/07 15:51:30 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/08 16:35:59 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@
 # define SQUARE_RES		64
 
 # define FOV		90
+
+# define ERR		2147483648
 
 # define MINI_MAP_SCALE	8 // Example scale factor to reduce the mini map size
 # define X_OFFSET		10 // X offset from the screen corner
@@ -114,13 +116,14 @@ typedef struct s_rcast
 	t_coords	step;
 	float		camera_x;
 	float		line_height;
+	float		tex_pos;
 	float		perp_wall_dist;
 	unsigned char	red;
 	unsigned char	green;
 	unsigned char	blue;
 	int		x;
 	int		side;
-	int		tex_x;
+	float		tex_x;
 	int		draw_end;
 	int		draw_start;
 }			t_rcast;

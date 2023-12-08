@@ -1,8 +1,11 @@
 
+        WE ./textures/green.xpm
+   EA ./textures/blue.xpm
+
+
 NO ./textures/red.xpm
-SO ./textures/blue.xpm
-WE ./textures/green.xpm
-EA ./textures/grey.xpm
+SO ./textures/grey.xpm
+
 
 F 153,204,255
 C 128,128,128
@@ -10,6 +13,6 @@ C 128,128,128
 111111111111
 10000000011
 101100000111
-10010N000001
+100100N00001
 100000000001
 111111111111

@@ -10,3 +10,19 @@ A faire :
 
 -	verif si l'arg est un fichier '.cub'
 	
+	
+To fix:
+
+- raycast :
+	- The rendering is bugged if the fov is changed
+	- Cubes are not cubes..
+
+- Working on a more consistent parsing :
+	- Check for .xpm at the end of the images before trying to open them
+	- Need to check for characters or anything else after the map parsing.
+	- Colors can be redefined
+	- Need to return an error if redifining a texture, and not just ignore.
+
+- Doors implementation
+- Animated sprite implementation
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ashalagi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 10:01:20 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/07 10:06:25 by ashalagi         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:33:40 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void	*ft_get_image(char *line, t_data *data)
 int	ft_get_color(char *line)
 {
 	unsigned int	res;
-	unsigned int	err;
 	int				add;
 	int				nb;
 	int				i;
@@ -93,32 +92,31 @@ int	ft_get_color(char *line)
 	nb = 0;
 	i = 2;
 	res = 0;
-	err = 2147483648;
 	while (line[i] && line[i] != '\n')
 	{
-		if (!ft_isdigit(line[i]) || line[i] == ' ' || line[i] == ',')
-			return (err);
-		while (line[i] == ' ')
+		if (!ft_isdigit(line[i]) && (ft_isprint(line[i]) && line[i] != ' '))
+			return (ERR);
+		while (line[i] && (!ft_isprint(line[i]) || line[i] == ' '))
 			i++;
 		if (line[i] && ft_isdigit(line[i]))
 		{
 			nb++;
 			add = ft_atoi(line + i);
 			if (add > 255 || add < 0)
-				return (err);
+				return (ERR);
 			res <<= 8;
 			res += add;
 			while (ft_isdigit(line[i]))
 				i++;
 		}
-		while (line[i] && line[i] == ' ')
+		while (line[i] && (!ft_isprint(line[i]) || line[i] == ' '))
 			i++;
 		if (line[i] && line[i] == ',')
 			i++;
 	}
 	if (nb == 3)
 		return (res);
-	return (err);
+	return (ERR);
 }
 
 int	ft_strlen_map(char *str)
@@ -199,16 +197,18 @@ char	**ft_get_map(char *line, int fd, t_data *data)
 			free (line);
 			return (0);
 		}
+		if (*line == '\n')
+		{
+			free(line);
+			temp_map = ft_split(map, '\n');
+			free (map);
+			return (ft_check_map(temp_map, data));
+		}
 		map = ft_strjoin_free(map, line);
 		line = get_next_line(fd);
 	}
 	temp_map = ft_split(map, '\n');
 	free (map);
-	/*int i = 0;
-	while (temp_map[i])
-	{
-		printf("%s\n", temp_map[i++]); //debug
-	}*/
 	return (ft_check_map(temp_map, data));
 }
 
