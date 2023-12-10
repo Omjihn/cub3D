@@ -9,13 +9,14 @@ Algos :
 A faire :
 
 -	verif si l'arg est un fichier '.cub'
-	
+
+------------------------------------------------------------------------------
 	
 To fix:
 
-- raycast :
-	- The rendering is bugged if the fov is changed
-	- Cubes are not cubes..
+- Raycast :
+	- The rendering is bugged if the fov is changed | OK (only with 90)
+	- Cubes are not cubes.. | OK (same mistake)
 
 - Working on a more consistent parsing :
 	- Check for .xpm at the end of the images before trying to open them
@@ -26,3 +27,5 @@ To fix:
 - Doors implementation
 - Animated sprite implementation
 
+- Minimap :
+	- If the map is too large the minimap crashes the prog

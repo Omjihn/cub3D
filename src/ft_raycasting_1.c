@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:45:26 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/08 14:02:23 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/10 10:13:19 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	ft_init_raycast(t_data *data)
 	data->rcast->pos.y = data->player->pos.y;
 	data->rcast->dir.y = cosf(ft_deg_to_rad(data->player->angle));
 	data->rcast->dir.x = sinf(ft_deg_to_rad(data->player->angle));
-	data->rcast->plane.x = cosf(FOV / 2.0) * -data->rcast->dir.y;
-	data->rcast->plane.y = sinf(FOV / 2.0) * data->rcast->dir.x;
+	data->rcast->plane.x = cosf(ft_deg_to_rad(FOV) / 2.0) * -data->rcast->dir.y;
+	data->rcast->plane.y = sinf(ft_deg_to_rad(FOV) / 2.0) * data->rcast->dir.x;
 	data->rcast->x = 0;
 }
 
