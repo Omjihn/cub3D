@@ -40,14 +40,14 @@ void	ft_draw_bg(t_data *data)
 	{
 		x = 0;
 		while (x <= SCREENWIDTH)
-			img_pix_put(&data->img, x++, y, data->textures->floor);
+			img_pix_put(&data->img, x++, y, data->textures->ceiling);
 		y++;
 	}
 	while (y <= SCREENHEIGHT)
 	{
 		x = 0;
 		while (x <= SCREENWIDTH)
-			img_pix_put(&data->img, x++, y, data->textures->ceiling);
+			img_pix_put(&data->img, x++, y, data->textures->floor);
 		y++;
 	}
 }
