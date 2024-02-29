@@ -6,7 +6,7 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 10:50:34 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/07 13:46:14 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/11 17:24:59 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,13 @@ void	ft_get_player_coords(t_data *data)
 
 void	ft_run_through(t_data *data, char **map, int y, int x)
 {
-	if (map[y][x] == '1')
-		return ;
-	if (x <= 0 || y <= 0 || x >= data->map_max_x - 1 || y >= data->map_max_y - 1)
+	if (x < 0 || y < 0 || x > data->map_max_x || y >= data->map_max_y)
 	{
-		if (map[y][x] == '0' || map[y][x] == 'S' || map[y][x] == 'E'
-			|| map[y][x] == 'N' || map[y][x] == 'W')
-		{
-			data->err = 1;
-			return ;
-		}
+		data->err = 1;
 		return ;
 	}
+	if (map[y][x] == '1' || map[y][x] == '2')
+		return ;
 	if (map[y][x] == ' ')
 	{
 		data->err = 1;
@@ -77,7 +72,7 @@ void	ft_run_through(t_data *data, char **map, int y, int x)
 		return ;
 	}
 	if (map[y][x] == '0' || map[y][x] == 'S' || map[y][x] == 'E'
-		|| map[y][x] == 'N' || map[y][x] == 'W')
+		|| map[y][x] == 'N' || map[y][x] == 'W' || map[y][x] == 'D')
 		map[y][x] = '1';
 	ft_run_through(data, map, y - 1, x);
 	ft_run_through(data, map, y, x - 1);

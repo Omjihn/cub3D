@@ -6,10 +6,9 @@
 /*   By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 11:19:29 by gbricot           #+#    #+#             */
-/*   Updated: 2023/12/10 10:13:00 by gbricot          ###   ########.fr       */
+/*   Updated: 2023/12/12 14:26:47 by gbricot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -61,6 +60,13 @@
 # define X_OFFSET		10 // X offset from the screen corner
 # define Y_OFFSET		10 // Y offset from the screen corner
 
+# define DOOR_PATH		"./textures/door-.xpm"
+
+# define ANIM_1 "./textures/fire_1.xpm"
+# define ANIM_2 "./textures/fire_2.xpm"
+# define ANIM_3 "./textures/fire_3.xpm"
+# define ANIM_4 "./textures/fire_4.xpm"
+
 /*		STRUCTURES		*/
 
 typedef struct s_image
@@ -74,10 +80,15 @@ typedef struct s_image
 
 typedef struct s_texture
 {
-	t_image		no;
-	t_image		so;
-	t_image		ea;
-	t_image		we;
+	t_image			no;
+	t_image			so;
+	t_image			ea;
+	t_image			we;
+	t_image			door;
+	t_image			anim_1;
+	t_image			anim_2;
+	t_image			anim_3;
+	t_image			anim_4;
 	unsigned int	floor;
 	unsigned int	ceiling;
 }		t_textures;
@@ -97,35 +108,39 @@ typedef struct s_coords_f
 typedef struct s_player
 {
 	t_coords_f	pos;
-	float	angle;
-//	int			facing_door; // 1 if facing a door, 0 otherwise
-	int		facing_door;
-	int		door_x;
-	int		door_y;
+	float		angle;
+	int			facing_door;
+	int			door_x;
+	int			door_y;
 }		t_player;
 
 typedef struct s_rcast
 {
-	t_coords_f	pos;
-	t_coords_f	dir;
-	t_coords_f	plane;
-	t_coords_f	raydir;
-	t_coords_f	sidedist;
-	t_coords_f	deltadist;
-	t_coords	map;
-	t_coords	step;
-	float		camera_x;
-	float		line_height;
-	float		tex_pos;
-	float		perp_wall_dist;
 	unsigned char	red;
 	unsigned char	green;
 	unsigned char	blue;
-	int		x;
-	int		side;
-	float		tex_x;
-	int		draw_end;
-	int		draw_start;
+	t_coords_f		pos;
+	t_coords_f		dir;
+	t_coords_f		plane;
+	t_coords_f		raydir;
+	t_coords_f		sidedist;
+	t_coords_f		deltadist;
+	t_coords		map;
+	t_coords		step;
+	float			step_tex;
+	float			camera_x;
+	float			line_height;
+	float			tex_pos;
+	float			perp_wall_dist;
+	float			tex_x;
+	char			*wall_type;
+	char			frame;
+	int				x;
+	int				y;
+	int				side;
+	int				index;
+	int				draw_end;
+	int				draw_start;
 }			t_rcast;
 
 typedef struct s_data
@@ -151,13 +166,18 @@ char	ft_get_info(char *line, t_data *data);
 char	ft_check_data(t_data *data);
 char	ft_is_map_char(char c);
 char	ft_pathfinding(t_data *data);
+char	ft_only_spaces(t_data *data, char *line, int fd);
 
 char	*ft_strjoin_free(char *s1, char *s2);
+char	*ft_check_tex_name(char *line, char	*file, int j);
 
-void	*ft_get_image(char *line, t_data *data);
+char	**ft_check_map(char **base_map, t_data *data);
+
+void	ft_get_image(t_data *data, char *line, t_image *img);
 void	ft_get_player_coords(t_data *data);
 
-int		ft_get_color(char *line);
+int		ft_strlen_map(char *str);
+int		ft_get_color(char *line, unsigned int color);
 
 /*		UTILS FUNCTIONS		*/
 
@@ -168,35 +188,46 @@ void	ft_free_all(t_data *data);
 int		ft_close_button(t_data *data);
 int		ft_player_move(int keycode, t_data *data);
 int		ft_mouse_hook(int x, int y, t_data *param);
-
-//void	ft_render_game(t_data *data);
 void	ft_raycast_horizontal(t_data *data, int angle);
 
 /*		DRAW			*/
-
-void	ft_draw_vector(float x1, float y1, float x2, float y2, t_data *data);
 
 void	img_pix_put(t_image *img, int x, int y, int color);
 void	ft_create_image(t_data *data);
 void	ft_draw_bg(t_data *data);
 
 /*		FI_INIT			*/
-int ft_game_loop(t_data *data);
 
+int		ft_game_loop(t_data *data);
 
-/*		FT_PAYCASTING_1			*/
+/*		RAYCASTING			*/
+
 float	ft_deg_to_rad(float a);
 float	ft_fix_ang(float a);
 void	ft_cast_vertical_ray(t_data *data, float *disV);
 void	ft_cast_horizontal_ray(t_data *data, float *disH);
 void	ft_draw_rays_2d(t_data *data);
 void	ft_raycast(t_data *data);
+void	ft_get_side_dist(t_data *data);
+char	ft_wall_found(t_data *data);
+void	ft_search_wall(t_data *data);
+void	ft_calc_wall_dist(t_data *data);
+
+/*		TEXTURE_RAYCAST		*/
+
+void	ft_draw_pix(t_data *data);
 
 /*		MINI_MAP			*/
-void ft_draw_mini_map(t_data *data);
-void ft_draw_mini_player(t_data *data);
+
+void	draw_map_element(t_data *data, int mini_map_x, \
+	int mini_map_y, int color);
+int		ft_put_color(char map_value);
+int		ft_should_draw(int mini_map_x, int mini_map_y);
+void	ft_draw_mini_map(t_data *data);
+void	ft_draw_mini_player(t_data *data);
 
 /*		DOOR			*/
-void ft_interact_door(t_data *data);
+
+void	ft_interact_door(t_data *data);
 
 #endif

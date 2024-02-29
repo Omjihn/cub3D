@@ -1,16 +1,33 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: gbricot <gbricot@student.42perpignan.fr    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/12/11 17:42:25 by gbricot           #+#    #+#              #
+#    Updated: 2023/12/12 13:14:40 by gbricot          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Define your source files and target executable
 SRC_DIR := ./src
 SRC_FILES :=	main.c \
 				parse_map.c \
+				parse_map_file.c \
+				parse_infos.c \
 				parse_map_utils.c \
 				pathfinding.c \
 				hooks.c \
 				display.c \
 				ft_free.c \
 				ft_init.c \
-				ft_raycasting_1.c \
-				bresenham.c \
-				mini_map.c
+				raycasting.c \
+				get_wall_dist.c \
+				texture_raycast.c \
+				mini_map_1.c \
+				mini_map_2.c \
+				door.c
 
 
 OBJ_DIR := ./obj
